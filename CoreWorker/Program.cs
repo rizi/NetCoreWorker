@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 using Unity;
 using Unity.Microsoft.DependencyInjection;
@@ -20,7 +19,7 @@ namespace CoreWorker
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            UnityContainer container = new UnityContainer();
+            IUnityContainer container = SetupUnity();
 
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
@@ -34,9 +33,13 @@ namespace CoreWorker
 
         #region Private Methods
 
-        private static void SetupUnity(IUnityContainer container)
+        private static IUnityContainer SetupUnity()
         {
-            container.RegisterType(typeof(ILogger<>), typeof(Logger<>));
+            IUnityContainer container = new UnityContainer();
+
+            //todo add registrations here
+
+            return container;
         }
 
         #endregion
