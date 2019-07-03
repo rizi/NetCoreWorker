@@ -14,6 +14,7 @@ namespace CoreWorker
 
         public static async Task Main(string[] args)
         {
+            //note: https://wakeupandcode.com/worker-service-in-asp-net-core/
             await CreateHostBuilder(args).Build().RunAsync();
         }
 
@@ -22,11 +23,13 @@ namespace CoreWorker
             IUnityContainer container = SetupUnity();
 
             return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                                   {
-                                       services.AddHostedService<Worker>();
-                                   })
-                .UseServiceProviderFactory<IUnityContainer>(new ServiceProviderFactory(container));
+                    .ConfigureServices((hostContext, services) =>
+                                       {
+                                           services.AddHostedService<Worker>();
+                                       })
+                    .UseServiceProviderFactory<IUnityContainer>(new ServiceProviderFactory(container))
+                    .UseWindowsService()
+                ;
         }
 
         #endregion
